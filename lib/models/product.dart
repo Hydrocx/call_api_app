@@ -1,5 +1,5 @@
 class Product {
-  final int id;
+  final dynamic id;
   final String title;
   final double price;
   final String description;
@@ -23,9 +23,10 @@ class Product {
     required this.brand,
   });
 
+  /// Parse từ DummyJSON API
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'] as int,
+      id: json['id'],
       title: json['title'] as String,
       price: (json['price'] as num).toDouble(),
       description: json['description'] as String,
@@ -36,5 +37,36 @@ class Product {
       stock: json['stock'] as int,
       brand: (json['brand'] ?? '') as String,
     );
+  }
+
+  /// Parse từ Firestore document
+  factory Product.fromFirestore(Map<String, dynamic> data) {
+    return Product(
+      id: data['id'] ?? '',
+      title: data['title'] as String? ?? '',
+      price: (data['price'] as num?)?.toDouble() ?? 0.0,
+      description: data['description'] as String? ?? '',
+      category: data['category'] as String? ?? '',
+      thumbnail: data['thumbnail'] as String? ?? '',
+      rating: (data['rating'] as num?)?.toDouble() ?? 0.0,
+      discountPercentage: (data['discountPercentage'] as num?)?.toDouble() ?? 0.0,
+      stock: (data['stock'] as num?)?.toInt() ?? 0,
+      brand: data['brand'] as String? ?? '',
+    );
+  }
+
+  /// Chuyển thành Map để lưu lên Firestore
+  Map<String, dynamic> toFirestore() {
+    return {
+      'title': title,
+      'price': price,
+      'description': description,
+      'category': category,
+      'thumbnail': thumbnail,
+      'rating': rating,
+      'discountPercentage': discountPercentage,
+      'stock': stock,
+      'brand': brand,
+    };
   }
 }

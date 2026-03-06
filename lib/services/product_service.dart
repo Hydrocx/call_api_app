@@ -11,6 +11,11 @@ class ProductService {
   /// Lưu danh mục đã giả lập lỗi rồi (chỉ lỗi lần đầu)
   static final Set<String> _failedOnce = {};
 
+  /// Reset giả lập lỗi (dùng khi seed data)
+  static void resetSimulateError() {
+    _failedOnce.addAll(categories.map((c) => c['slug']!));
+  }
+
   /// Danh sách các danh mục hỗ trợ
   static const List<Map<String, String>> categories = [
     {'slug': 'laptops', 'label': 'Laptops'},

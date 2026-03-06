@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757604736514",
+    "project_id": "call-api-app-15ed6",
+    "storage_bucket": "call-api-app-15ed6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757604736514:android:6f7f80c41ef312d73c111b",
+        "android_client_info": {
+          "package_name": "com.example.call_api_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn9t_9x67F4L6oBBRfj2gNmyTsahML2s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
