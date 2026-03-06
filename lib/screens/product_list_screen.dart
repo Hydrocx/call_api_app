@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../services/product_service.dart';
 import '../services/firebase_service.dart';
 import '../widgets/product_card.dart';
 
 class ProductListScreen extends StatefulWidget {
   final String categorySlug;
   final String categoryLabel;
-  final bool useFirebase;
 
   const ProductListScreen({
     super.key,
     required this.categorySlug,
     required this.categoryLabel,
-    this.useFirebase = false,
   });
 
   @override
@@ -21,7 +18,6 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  final ProductService _apiService = ProductService();
   final FirebaseService _firebaseService = FirebaseService();
 
   // 3 trạng thái: loading, success, error
@@ -35,7 +31,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     _fetchProducts();
   }
 
-  /// Gọi dữ liệu từ API hoặc Firebase tùy theo nguồn
+  /// Lấy dữ liệu từ Firebase Firestore
   Future<void> _fetchProducts() async {
     setState(() {
       _isLoading = true;
@@ -43,12 +39,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
     });
 
     try {
-      List<Product> products;
-      if (widget.useFirebase) {
-        products = await _firebaseService.fetchProductsByCategory(widget.categorySlug);
-      } else {
-        products = await _apiService.fetchProductsByCategory(widget.categorySlug);
-      }
+      final products =
+          await _firebaseService.fetchProductsByCategory(widget.categorySlug);
       setState(() {
         _products = products;
         _isLoading = false;
@@ -72,24 +64,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: Chip(
-              avatar: Icon(
-                widget.useFirebase ? Icons.cloud : Icons.public,
-                size: 16,
-                color: widget.useFirebase ? Colors.orange : Colors.blue,
-              ),
-              label: Text(
-                widget.useFirebase ? 'Firebase' : 'API',
-                style: const TextStyle(fontSize: 11, color: Colors.white),
-              ),
-              backgroundColor: Colors.deepPurple[300],
-              side: BorderSide.none,
-            ),
-          ),
-        ],
       ),
       body: _buildBody(),
     );
